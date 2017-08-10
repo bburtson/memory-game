@@ -1,1 +1,1 @@
-export const BUTTONCOLORS = [ 'green', 'red', 'yellow', 'blue' ];
+export const BUTTONCOLORS = [ 'green', 'yellow', 'blue', 'red' ];

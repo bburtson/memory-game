@@ -7,23 +7,30 @@ import { BUTTONCOLORS } from './ButtonColors';
 @Component({
     selector: 'app-game',
     template: `
+    <hr>
     <div class="col-xs-12">
         <game-button *ngFor="let color of buttonColors"
                      [buttonColor]="color"
                      class="col-xs-6">
         </game-button>
     </div>
+    <div>
+        <button class="btn" (click)="toggleGame()" [ngClass]="state">{{state}}</button>
+    </div>
     `,
 
-    styles: [`game-button.col-xs-6 { margin:0; padding:0; }`]
+    styleUrls: [ 'game.component.css' ]
 })
 export class GameComponent {
 
     buttonColors = BUTTONCOLORS;
+    state = 'off';
+    powerOn = false;
 
-    powerOn = true;
-
-    toggleOn(): void { this.powerOn = !this.powerOn; }
+    toggleGame(): void {
+        this.powerOn = !this.powerOn;
+        this.state = this.powerOn ? 'on' : 'off';
+     }
 
     start(): void {
         //

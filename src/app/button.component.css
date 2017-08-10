@@ -1,24 +1,25 @@
- 
-
-.green{
-    background-color: green; 
-}
-
-.red{ 
-    background-color: red;
-}
-
-.yellow{ 
-    background-color: yellow; 
-}
-
-.blue{ 
-    background-color: blue; 
-}
-
 button {
     width: 100%;
-    height: 175px;
+    height: 200px;
     padding: 0;
     margin: 0;
+}
+
+ button.active {
+     filter: brightness(2); 
+} 
+.red {
+    background-color:darkred;
+}
+
+.green {
+    background-color: darkgreen;
+}
+
+.yellow {
+    background-color: darkgoldenrod;
+}
+
+.blue {
+    background-color: darkblue;
 }
