@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { StateManagerService } from './state-manager.service';
 
 @Component({
   selector: 'app-root',
@@ -12,7 +13,8 @@ import { Component } from '@angular/core';
     </div>
   </div>
   `,
-  styleUrls: ['./app.component.css']
+  styleUrls: ['./app.component.css'],
+  providers: [ StateManagerService ]
 })
 export class AppComponent {
   title = 'Memory-game';

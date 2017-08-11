@@ -1,0 +1,25 @@
+<hr>
+<div class="col-xs-12">
+    <game-button *ngFor="let color of buttonColors" [buttonColor]="color" class="col-xs-6">
+    </game-button>
+
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="col-xs-6">
+                <label>Power</label>
+                <button class="btn" (click)="toggleOn()" [ngClass]="stateManager.powerOn ? 'on' : ''">&nbsp;</button>
+                <br><br>        
+            </div>
+            
+            <div class="col-xs-6">
+                <label>Start</label>
+                <button class="btn" (click)="start()">&nbsp;</button>
+            </div>
+            
+            <div class="col-xs-6">
+                <span>Total in sequence</span> <span [innerText]="sequenceDisplayCount"></span>
+            </div>
+            
+        </div>
+    </div>
+</div>
