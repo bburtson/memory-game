@@ -1,7 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { StateManagerService } from './state-manager.service';
 
-// import { ButtonColors } from './ButtonColors';
+
 @Component({
     selector: 'game-button',
     template: `
@@ -11,8 +11,8 @@ import { StateManagerService } from './state-manager.service';
 })
 export class ButtonComponent implements OnInit {
     @Input() buttonColor: string;
-    sound: HTMLAudioElement;
-    classes: string;
+    private sound: HTMLAudioElement;
+    private classes: string;
 
     constructor(private stateManager: StateManagerService) { }
 

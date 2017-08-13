@@ -11,13 +11,18 @@
                 <br><br>        
             </div>
             
-            <div class="col-xs-6">
+            <div class="col-xs-4">
                 <label>Start</label>
                 <button class="btn" (click)="start()">&nbsp;</button>
             </div>
-            
-            <div class="col-xs-6">
-                <span>Total in sequence</span> <span [innerText]="sequenceDisplayCount"></span>
+            <div class="col-xs-4">
+                <label>Strict Mode</label>
+                <button class="btn" (click)="stateManager.strictMode = !stateManager.strictMode;"
+                                    [ngClass]="stateManager.strictMode? 'on':''">&nbsp;</button>
+            </div>
+
+            <div class="col-xs-4">
+                <span>Total in sequence</span> <span [innerText]="outputSequence.length"></span>
             </div>
             
         </div>

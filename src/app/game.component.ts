@@ -1,96 +1,101 @@
 import { Component, OnInit } from '@angular/core';
-import { NgFor } from '@angular/common';
-
-import { BUTTONCOLORS } from './ButtonColors';
-import { StateManagerService } from './state-manager.service';
-import { Subscription } from 'rxjs/Subscription';
-import { ButtonComponent } from './button.component';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/Observable/timer';
 
+import { StateManagerService } from './state-manager.service';
+import { ButtonComponent } from './button.component';
+import { BUTTONCOLORS } from './ButtonColors';
 
 @Component({
     selector: 'app-game',
     templateUrl: './game.component.html',
-
     styleUrls: ['game.component.css']
 })
 export class GameComponent implements OnInit {
 
-    buttonColors = BUTTONCOLORS;
-    outputSequence = new Array<string>();
-    sequenceDisplayCount = 0;
-    userInputsCount = 0;
+    private buttonColors = BUTTONCOLORS;
+    private outputSequence: string[] = [];
+    private userInputsCount = 0;
+    private incorrectSound: HTMLAudioElement;
+    private victorySound: HTMLAudioElement;
 
     constructor(private stateManager: StateManagerService) { }
 
     ngOnInit(): void {
-        this.stateManager.gameStartedEvent.subscribe(() => { this.onGameStarted(); });
+        this.incorrectSound = new Audio('assets/incorrect-sound.mp3');
+        this.victorySound = new Audio('assets/victory-sound.mp3');
         this.stateManager.userInputEvent.subscribe((e) => { this.onUserInput(e); });
     }
 
-    onGameStarted(): void {
-        this.propagateSequence();
+    private addRandomSequenceColor(): void {
+        const i = Math.floor(Math.random() * (this.buttonColors.length));
+        this.outputSequence.push(this.buttonColors[i]);
     }
 
-    propagateSequence(): void {
-        this.outputSequence.push(this.getRandomColor());
-        this.displaySequence();
-    }
-
-    displaySequence(): void {
-        this.sequenceDisplayCount = this.outputSequence.length;
+    private displaySequence(): void {
         const sub = Observable.timer(1500, 800).subscribe((count) => {
             if (count < this.outputSequence.length) {
                 this.stateManager.userInputEnabled = false;
                 this.getButtonComponent(this.outputSequence[count]).activate();
             } else {
                 this.stateManager.userInputEnabled = true;
-                this.sequenceDisplayCount = this.userInputsCount;
                 sub.unsubscribe();
             }
         });
     }
 
-    onUserInput(buttonColor: string): void {
-        console.log(buttonColor);
+    private onUserInput(buttonColor: string): void {
         this.gradeUserInput(buttonColor);
         if (this.userInputsCount === this.outputSequence.length) {
-            console.dir('branched');
             this.userInputsCount = 0;
-            this.propagateSequence();
+            if (this.outputSequence.length < 20) {
+                this.addRandomSequenceColor();
+                this.displaySequence();
+            } else { this.endGame(); }
         }
     }
 
-    gradeUserInput(color: string): void {
-        console.dir(color);
+    private gradeUserInput(color: string): void {
         if (this.outputSequence[this.userInputsCount] === color) {
             this.userInputsCount++;
-        } else if (this.stateManager.strictMode) {
-            // handle incorrect
         } else {
+            this.incorrectSound.play();
             this.stateManager.userInputEnabled = false;
-            this.userInputsCount = 0;
-            this.displaySequence();
+            const delay = Observable.timer(2000, 0).subscribe(() => {
+                this.userInputsCount = 0;
+                if (this.stateManager.strictMode) {
+                    this.outputSequence = [];
+                    this.addRandomSequenceColor();
+                }
+                this.displaySequence();
+                delay.unsubscribe();
+            });
         }
     }
-    getButtonComponent(color: string): ButtonComponent {
+
+    private endGame(): void {
+        this.outputSequence = [];
+        this.victorySound.play();
+        const delay = Observable.timer(2000, 0).subscribe(() => {
+            alert('You win!');
+            delay.unsubscribe();
+        });
+    }
+
+    private getButtonComponent(color: string): ButtonComponent {
         return this.stateManager.gameInputs.find((input) => input.buttonColor === color);
     }
 
-
-
-    getRandomColor(): string {
-        const i = Math.floor(Math.random() * (this.buttonColors.length));
-        return this.buttonColors[i];
-    }
-
-
-    toggleOn(): void {
+    private toggleOn(): void {
         this.stateManager.powerOn = !this.stateManager.powerOn;
+        if (!this.stateManager.powerOn) { this.outputSequence = []; }
     }
 
-    start(): void {
-        this.stateManager.startGame();
+    private start(): void {
+        this.outputSequence = [];
+        if (this.stateManager.powerOn) {
+            this.addRandomSequenceColor();
+            this.displaySequence();
+        }
     }
 }
