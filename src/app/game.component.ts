@@ -15,6 +15,7 @@ export class GameComponent implements OnInit {
 
     private buttonColors = BUTTONCOLORS;
     private outputSequence: string[] = [];
+    private sequenceCount:any = "&#9654;"
     private userInputsCount = 0;
     private incorrectSound: HTMLAudioElement;
     private victorySound: HTMLAudioElement;
@@ -93,6 +94,7 @@ export class GameComponent implements OnInit {
 
     private start(): void {
         this.outputSequence = [];
+        this.sequenceCount = this.outputSequence.length;
         if (this.stateManager.powerOn) {
             this.addRandomSequenceColor();
             this.displaySequence();

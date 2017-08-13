@@ -4,9 +4,7 @@ import { StateManagerService } from './state-manager.service';
 
 @Component({
     selector: 'game-button',
-    template: `
-    <button (click)="userInput()" class="btn col-xs-6" [ngClass]="classes">{{buttonColor}}</button>
-    `,
+    template: `<a (click)="userInput()" class="col-xs-6" [ngClass]="classes"></a>`,
     styleUrls: ['./button.component.css']
 })
 export class ButtonComponent implements OnInit {

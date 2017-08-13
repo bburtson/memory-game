@@ -3,16 +3,7 @@ import { StateManagerService } from './state-manager.service';
 
 @Component({
   selector: 'app-root',
-  //  templateUrl: './app.component.html',
-  template: `
-  <div class="row">
-    <div class="col-xs-12 col-sm-8 col-sm-offset-2">
-      <h1>{{title}}</h1>
-      <span>by Brett </span>
-      <app-game></app-game>
-    </div>
-  </div>
-  `,
+  templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
   providers: [ StateManagerService ]
 })
